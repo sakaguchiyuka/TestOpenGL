@@ -1,10 +1,16 @@
 precision highp float;
 uniform vec2 u_resolution;
 
+// Repetition function(反復関数)
+vec3 opRep(vec3 p) {
+  vec3 c = vec3(8.0);
+  return mod(p,c) - 0.5*c;
+}
+
 // distance functionの定義
 const float radius = 1.0;
 float distanceFunc(vec3 pos) {
-  return length(pos) - radius;
+  return length(opRep(pos)) - radius;
 }
 
 // 座標の法線ベクトル取得関数
@@ -18,7 +24,7 @@ vec3 getNormal(vec3 p){
 }
 
 const vec3 lightDir = vec3(-0.577, 0.577, 0.577);  // 平行光源の光線方向ベクトル
-const int loopCnt = 16;
+const int loopCnt = 32;
 void main() {
   // フラグメントの座標の算出
   vec2 pos = (gl_FragCoord.xy*2.0 - u_resolution) / min(u_resolution.x, u_resolution.y);
